@@ -4,12 +4,12 @@ from langchain.agents import initialize_agent, AgentType
 from langchain.chat_models import ChatOpenAI
 from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 
-from tools import TotalRevenueReaderTool, ClientSimilarityTool, GetClientInformationTool
-
+from tools import UsersReaderTool
 ##############################
 ### initialize agent #########
 ##############################
-tools = [TotalRevenueReaderTool(), ClientSimilarityTool(), GetClientInformationTool()]
+# tools = [TotalRevenueReaderTool(), ClientSimilarityTool(), GetClientInformationTool()]
+tools = [UsersReaderTool()]
 config = dotenv_values('.env')
 openai_key = config['OPENAI_API_KEY']
 
@@ -39,10 +39,10 @@ agent = initialize_agent(
 )
 
 # set title
-st.title('🏦 BankFlix Chatbot')
+st.title('🏦 Customer Chatbot')
 
 # set header
-st.header("Welcome dear bank employee!")
+st.header("Welcome dear user!")
 
 user_question = st.text_input('Ask a question here:')
 # if the question has more than 5 characters, run the agent

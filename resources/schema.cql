@@ -1,10 +1,10 @@
-USE bankflix;
+USE customer;
 
-CREATE TABLE IF NOT EXISTS TotalRevenueByClient (
-    client_id INT PRIMARY KEY,
-    total_revenue DECIMAL,
-    update_time TIMESTAMP
-);
+//CREATE TABLE IF NOT EXISTS TotalRevenueByClient (
+//    client_id INT PRIMARY KEY,
+//    total_revenue DECIMAL,
+//    update_time TIMESTAMP
+//);
 
 CREATE TABLE IF NOT EXISTS ClientById (
     client_id INT,
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS ClientById (
     PRIMARY KEY (client_id)
 );
 
-CREATE CUSTOM INDEX IF NOT EXISTS openai_client ON ClientById (embedding_client) USING 'org.apache.cassandra.index.sai.StorageAttachedIndex';
+CREATE CUSTOM INDEX IF NOT EXISTS user_info ON firstname (embedding) USING 'org.apache.cassandra.index.sai.StorageAttachedIndex';
 
 INSERT INTO TotalRevenueByClient (client_id, total_revenue, update_time) VALUES (1, 123123.42, dateOf(now()));
 

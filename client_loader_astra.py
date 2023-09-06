@@ -1,5 +1,5 @@
 import csv
-
+import numpy
 import openai
 from cassandra.auth import PlainTextAuthProvider
 from cassandra.cluster import Cluster
@@ -27,42 +27,31 @@ session = cluster.connect()
 
 # This function will load a CSV and insert values into the Astra database
 # Input format:
-# RowNumber,CustomerId,Surname,
-# CreditScore,Geography,Gender,Age,Tenure,Balance,NumOfProducts,HasCrCard,IsActiveMember,EstimatedSalary,Exited,
-# Complain,Satisfaction Score,Card Type,Point Earned
+# firstname, lastname, address1, city, state, zip
 #
 # Astra table columns:
-# client_id, surname, credit_score, location, gender, age, balance, has_credit_card,
-# estimated_salary, satisfaction_score, card_type, point_earned, embedding_client
+# firstname, lastname, address1, city, state, zip
 
 
-with open('resources/clients-dataset.csv', 'r') as file:
+with open('resources/output-000001.csv', 'r') as file:
     reader = csv.reader(file)
     next(reader) # skip header row
-    query = SimpleStatement(f"INSERT INTO {ASTRA_KEYSPACE_NAME}.ClientById (client_id, surname, credit_score, location, gender, age, " \
-            "balance, has_credit_card, estimated_salary, satisfaction_score, card_type, point_earned, " \
-            "embedding_client) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+    query = SimpleStatement(f"INSERT INTO {ASTRA_KEYSPACE_NAME}.user_info (firstname, lastname, address1, city, state, zip, embedding) VALUES (%s, %s, %s, %s, %s, %s, %s)")
 
     for row in reader:
-        client_id = int(row[1])
-        surname = row[2]
-        credit_score = int(row[3])
-        location = row[4]
-        gender = row[5]
-        age = int(row[6])
-        balance = float(row[8])
-        has_credit_card = bool(row[10])
-        estimated_salary = float(row[12])
-        satisfaction_score = int(row[14])
-        card_type = row[16]
-        point_earned = int(row[17])
-
+        firstname = row[0]
+        lastname = row[1]
+        address1 = row[2]
+        city = row[4]
+        state = row[5]
+        zip = row[6]
+        row2 = firstname + lastname + address1 + city + state + zip
+        # print(row2)
         # Create embedding for client containing all the rows
-        embedding_client = openai.Embedding.create(input=row, model=model_id)['data'][0]['embedding']
+        embedding = openai.Embedding.create(input=row2, model=model_id)['data'][0]['embedding']
 
         # Insert values into Astra database
-        session.execute(query, (client_id, surname, credit_score, location, gender, age, balance, has_credit_card,
-                                estimated_salary, satisfaction_score, card_type, point_earned, embedding_client))
+        session.execute(query, (firstname, lastname, address1, city, state, zip, embedding))
 
 ## TODO
 # failed to bind prepared statement on embedding type

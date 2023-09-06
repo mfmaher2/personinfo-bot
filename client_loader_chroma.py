@@ -10,9 +10,9 @@ openai.api_key = config['OPENAI_API_KEY']
 model_id = "text-embedding-ada-002"
 chroma_client = chromadb.Client()
 
-collection = chroma_client.create_collection(name="bankflix")
+collection = chroma_client.create_collection(name="personinfo")
 
-with open('resources/clients-dataset.csv', 'r') as file:
+with open('resources/output-000001.csv', 'r') as file:
     reader = csv.reader(file)
     headers = next(reader)
 
