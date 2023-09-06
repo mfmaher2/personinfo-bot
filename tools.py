@@ -29,14 +29,15 @@ class UsersReaderTool(BaseTool):
     name = "Total User Reader"
     description = "This tool will read the total users and return it so you can see it."
 
-    def _run(self, firstname):  # add user uuid
-        # firstname = "1"
-        query = f"SELECT * FROM {ASTRA_KEYSPACE_NAME}.user_info WHERE firstname = '{firstname}'"
+    def _run(self, firstname):
+        query = f"SELECT firstname, lastname, address1, city, state, zip FROM {ASTRA_KEYSPACE_NAME}.user_info WHERE firstname = '{firstname}'"
         rows = session.execute(query)
+        user_list = []
         for row in rows:
-            st.write(row.firstname)
+            user_list.append({f"firstname is {row.firstname}, lastname is {row.lastname}, address is {row.address1}, city is {row.city}, state is {row.state} , zip is {row.zip}"})
+        return user_list
 
-        return row
+        return user_list
 
     def _arun(self, query: str):
         raise NotImplementedError("This tool does not support async")
