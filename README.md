@@ -1,5 +1,5 @@
-# bank-assistant-bot
-Bank Assistant chat bot using LLM and AstraDB
+# person-assistant-bot
+Person Assistant chat bot using LLM and AstraDB
 
 ## Pre-requisites
 
