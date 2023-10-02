@@ -1,5 +1,5 @@
-# person-assistant-bot
-Person Assistant chat bot using LLM and AstraDB
+# personinfo-bot
+Person Info chat bot using LLM and AstraDB
 
 ## Pre-requisites
 
