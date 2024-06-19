@@ -24,7 +24,7 @@ def main():
         cassandra_host = '34.122.148.2'
         cassandra_port = 443
         username = 'superuser'
-        password = 'Z4I31QmzztY8J6iNm5fL'
+        password = ''
         keyspace = 'tech360'
         table = 'tech360_fwa_poc_c'
 
